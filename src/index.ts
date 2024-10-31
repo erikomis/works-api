@@ -1,8 +1,10 @@
 import { env } from "./common/utils/envConfig";
+import { AppDataSource } from "./database/data-source";
 import { app, logger } from "./server";
 
 const initServer = async () => {
   try {
+    await AppDataSource.initialize();
     const { NODE_ENV, HOST, PORT } = env;
     const server = app.listen(PORT, () => {
       logger.info(`Server (${NODE_ENV}) running on http://${HOST}:${PORT}`);
