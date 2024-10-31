@@ -7,6 +7,7 @@ import { env } from "@/common/utils/envConfig";
 import { ErrorHandle } from "./common/middleware/error-handler";
 import rateLimiter from "./common/middleware/rate-limiter";
 import requestLogger from "./common/middleware/request-logger";
+import { routeProduct } from "./routes/product.route";
 
 const logger = pino({ name: "server start" });
 const app: Express = express();
@@ -20,4 +21,6 @@ app.use(helmet());
 app.use(rateLimiter);
 app.use(errorHandler.handle);
 app.use(requestLogger);
+
+app.use("/product", routeProduct);
 export { app, logger };
