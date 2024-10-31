@@ -19,7 +19,7 @@ export const AppDataSource = new DataSource({
     encrypt: true,
     trustServerCertificate: true,
   },
-  entities: ["**/entities/**/*.{ts,js}"],
+  entities: ["**/entity/**/*.{ts,js}"],
   migrationsRun: true,
   migrations: ["**/migrations/**/*.{ts,js}"],
 });
