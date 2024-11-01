@@ -1,5 +1,4 @@
-import { Product } from "../entity/product.entity";
-
+import type { Product } from "../entity/product.entity";
 
 export interface ProductRepositoryProtocol {
   createProduct(product: Product): Promise<Product>;
