@@ -50,8 +50,12 @@
     "typeorm": "^0.3.20"
   },
   "lint-staged": {
-    "*.{js,ts,cjs,mjs,d.cts,d.mts,json,jsonc}": [
-      "biome check --apply --no-errors-on-unmatched"
-    ]
+    "*.{js,ts,cjs,mjs,d.cts,d.mts,json,jsonc}": ["biome check --apply --no-errors-on-unmatched"]
+  },
+  "tsup": {
+    "entry": ["src"],
+    "splitting": false,
+    "sourcemap": true,
+    "clean": true
   }
 }
