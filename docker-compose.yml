@@ -11,7 +11,7 @@ services:
       - MSSQL_SA_PASSWORD=TodoApiSqlPass123!
       - MSSQL_PID=Developer
 
-    app:
+  app:
       build:
         context: .
         dockerfile: Dockerfile
