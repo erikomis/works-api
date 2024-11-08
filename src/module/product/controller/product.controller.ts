@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
-import { CreateProductUseCase } from "../usecase/create-product.usecase";
-import { UpdateProductUseCase } from "../usecase/update-product.usecase";
-import { DeleteProductUseCase } from "../usecase/delete-product.usecase";
-import { GetByIdUseCase } from "../usecase/get-by-id.usecase";
-import { GetAllProductUseCase } from "../usecase/get-all-product.usecase";
+import type { CreateProductUseCase } from "../usecase/create-product.usecase";
+import type { DeleteProductUseCase } from "../usecase/delete-product.usecase";
+import type { GetAllProductUseCase } from "../usecase/get-all-product.usecase";
+import type { GetByIdUseCase } from "../usecase/get-by-id.usecase";
+import type { UpdateProductUseCase } from "../usecase/update-product.usecase";
 
 export class ProductController {
   private readonly createProductUseCase: CreateProductUseCase;
@@ -16,7 +16,7 @@ export class ProductController {
     updateProductUseCase: UpdateProductUseCase,
     deleteProductUseCase: DeleteProductUseCase,
     getByIdUseCase: GetByIdUseCase,
-    getAllProductUseCase: GetAllProductUseCase
+    getAllProductUseCase: GetAllProductUseCase,
   ) {
     this.createProductUseCase = createProductUseCase;
     this.updateProductUseCase = updateProductUseCase;
@@ -35,10 +35,7 @@ export class ProductController {
     const pageNumber = Number.parseInt(req.query.pageNumber as string) || 1;
     const pageSize = Number.parseInt(req.query.pageSize as string) || 10;
 
-    const products = await this.getAllProductUseCase.execute(
-      pageNumber,
-      pageSize
-    );
+    const products = await this.getAllProductUseCase.execute(pageNumber, pageSize);
     res.status(200).json(products);
   }
 
@@ -52,10 +49,7 @@ export class ProductController {
   public async updateProduct(req: Request, res: Response) {
     const productId = req.params.id;
     const product = req.body;
-    const updatedProduct = await this.updateProductUseCase.execute(
-      Number(productId),
-      product
-    );
+    const updatedProduct = await this.updateProductUseCase.execute(Number(productId), product);
     res.status(200).json(updatedProduct);
   }
 

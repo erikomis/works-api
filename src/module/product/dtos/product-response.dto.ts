@@ -3,6 +3,6 @@ export class ProductResponseDto {
   plu: string;
   description: string;
   ncm: string;
-  unidade: string;
+  unit: string;
   created_at: Date;
 }

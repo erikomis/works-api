@@ -25,5 +25,4 @@ app.use("/product", routeProduct);
 
 app.use(errorHandler.handle);
 
-app.use("/product", routeProduct);
 export { app, logger };

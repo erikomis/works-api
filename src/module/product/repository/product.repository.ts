@@ -1,6 +1,6 @@
 import type { DataSource, Repository } from "typeorm";
-import type { ProductRepositoryProtocol } from "./product-repository.protocol";
 import { Product } from "../entity/product.entity";
+import type { ProductRepositoryProtocol } from "./product-repository.protocol";
 
 export class ProductRepository implements ProductRepositoryProtocol {
   private productsRepository: Repository<Product>;
@@ -9,41 +9,35 @@ export class ProductRepository implements ProductRepositoryProtocol {
   }
 
   async createProduct(product: Product): Promise<Product> {
-    const result = await this.productsRepository.manager.query(
-      // "EXEC InsertProduct @Plu = ?, @Description = ?, @Ncm = ?, @Unit = ?",
-      // [product.plu, product.description, product.ncm, product.unidade]
-
-      `EXEC InsertProduct @Plu = '${product.plu}', @Description = '${product.description}', @Ncm = '${product.ncm}', @Unidade = '${product.unidade}'`
-    );
-    return result;
+    const productCreated = this.productsRepository.create(product);
+    return await this.productsRepository.save(productCreated);
   }
 
   async getProducts(pageNumber: number, pageSize: number): Promise<Product[]> {
-    return this.productsRepository.manager.query(
-      `EXEC GetPagedProducts @PageNumber = ${pageNumber} , @PageSize = ${pageSize}`
-    );
+    const products = await this.productsRepository.find({
+      take: pageSize,
+      skip: (pageNumber - 1) * pageSize,
+    });
+    return products;
   }
 
   async getProductById(id: number): Promise<Product | null> {
-    const result = await this.productsRepository.manager.query(
-      `EXEC GetProductById @ProductId = ${id}`
-    );
-    return result[0];
+    const result = await this.productsRepository.findOne({
+      where: { id },
+    });
+    return result || null;
   }
 
   async updateProduct(id: number, product: Product): Promise<Product> {
-    const result = await this.productsRepository.manager.query(
-      // "EXEC UpdateProduct @ProductId = ?, @Plu = ?, @Description = ?, @Ncm = ?, @Unit = ?",
-      // [id, product.plu, product.description, product.ncm, product.unidade]
-      `EXEC UpdateProduct @ProductId = ${id}, @Plu = '${product.plu}', @Description = '${product.description}', @Ncm = '${product.ncm}', @Unidade = '${product.unidade}'`
-    );
-    return result;
+    product.id = id;
+    const updatedProduct = await this.productsRepository.save({
+      ...product,
+    });
+    return updatedProduct;
   }
 
   async deleteProduct(productId: number): Promise<void> {
-    await this.productsRepository.manager.query(
-      `EXEC DeleteProduct @ProductId = ${productId}`
-    );
+    await this.productsRepository.delete(productId);
   }
 
   async findByPlu(plu: string): Promise<Product | null> {
